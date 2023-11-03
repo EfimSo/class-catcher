@@ -6,9 +6,11 @@ export default function Home() {
     <main className={styles.main}>
 
       <div className={styles.center}>
-        <h1>
-          Class-Catcher
-        </h1>
+        <div className={styles.loginContainer}>
+          <h1>
+            Class-Catcher
+          </h1> 
+        </div> 
       </div>
 
     </main>
