@@ -7,9 +7,11 @@ export default function Home() {
 
       <div className={styles.center}>
         <div className={styles.loginContainer}>
-          <h1>
-            Class-Catcher
-          </h1> 
+          <h1>Class-Catcher</h1> 
+            <div className={styles.textbox}>
+            <i className = "userInput"></i>
+            <input type="text" placeholder="Adress"></input>
+          </div>
         </div> 
       </div>
 
