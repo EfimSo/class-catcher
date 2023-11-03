@@ -6,9 +6,13 @@ export default function Home() {
     <main className={styles.main}>
 
       <div className={styles.center}>
-        <h1>
-          Class-Catcher
-        </h1>
+        <div className={styles.loginContainer}>
+          <h1>Class-Catcher</h1> 
+            <div className={styles.textbox}>
+            <i className = "userInput"></i>
+            <input type="text" placeholder="Adress"></input>
+          </div>
+        </div> 
       </div>
 
     </main>
