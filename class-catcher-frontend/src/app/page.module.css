@@ -247,6 +247,14 @@
   margin: 12px 0;
 }
 
+.inputBox{
+  width: 320px;
+  height: 300px;
+  margin: 25px auto 10px auto;
+  border-radius: 5%;
+  background-color: gray ;
+}
+
 /* Tablet and Smaller Desktop */
 @media (min-width: 701px) and (max-width: 1120px) {
   .grid {
