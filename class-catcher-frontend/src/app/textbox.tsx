@@ -1,14 +1,16 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
+import styles from './page.module.css'
+
 
 interface TextValues {
-  text1: string;
+  adress: string;
   text2: string;
   text3: string;
 }
 
 const CustomTextBox: React.FC = () => {
   const [textValues, setTextValues] = useState<TextValues>({
-    text1: '',
+    adress: '',
     text2: '',
     text3: '',
   });
@@ -25,12 +27,13 @@ const CustomTextBox: React.FC = () => {
 
   return (
     <div>
+        
       <h1>Class-catcher</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          name="text1"
-          value={textValues.text1}
+          name="adress"
+          value={textValues.adress}
           onChange={handleTextChange}
           placeholder="Adress"
         />
