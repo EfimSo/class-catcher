@@ -10,7 +10,8 @@ function AddressSearch({ onAddressSelected }: AddressSearchProps) {
   const [filteredAddresses, setFilteredAddresses] = useState<string[]>([]);
   const addressData = ['Warren Towers', 'West Campus, Claflin Hall', 'West Campus, Sleeper Hall', 
   'West Campus, Rich Hall', 'Myles Standish Hall', 'Kilachand Hall', 'The Towers', 'Danielsen Hall',
-  '1019 Commonwealth Ave', '575 Commonwealth Ave (Hojo)'];
+  '1019 Commonwealth Ave', '575 Commonwealth Ave (Hojo)', '10 Buick Street (StuVi-1)', 
+  '33 Harry Agganis Way (StuVi-2)'];
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const userInput = e.target.value;
