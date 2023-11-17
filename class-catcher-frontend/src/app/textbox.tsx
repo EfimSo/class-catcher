@@ -25,6 +25,11 @@ const CustomTextBox: React.FC = () => {
       return;
     }
 
+    if (name === 'courseDepartment' && !/^[A-Za-z]{0,2}$/.test(value)) {
+      // Allow only up to 2 letters for courseDepartment
+      return;
+    }
+
     setTextValues({ ...textValues, [name]: value });
   };
 
@@ -46,7 +51,7 @@ const CustomTextBox: React.FC = () => {
 
   return (
     <div className={styles['address-search']}>
-      <h1>Class-catcher</h1>
+      <h1>Class-Catcher</h1>
       <AddressSearch onAddressSelected={handleAddressSelected} />
       <br />
       {/* College Dropdown */}
