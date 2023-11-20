@@ -9,7 +9,11 @@ export default function Home() {
   return (
     <main className={styles.main}>
 
-      <CustomTextBox/>
+      <div className={styles.center}>
+          <CustomTextBox/>
+
+      </div>
+
 
       
           

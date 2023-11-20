@@ -255,6 +255,13 @@
   background-color: gray ;
 }
 
+.centerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Adjust the height based on your requirements */
+}
+
 /* Tablet and Smaller Desktop */
 @media (min-width: 701px) and (max-width: 1120px) {
   .grid {
