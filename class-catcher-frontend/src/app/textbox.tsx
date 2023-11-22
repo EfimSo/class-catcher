@@ -7,6 +7,7 @@ interface TextValues {
   college: string;
   courseDepartment: string;
   courseNumber: string;
+  transportation: string;
 }
 
 const CustomTextBox: React.FC = () => {
@@ -15,9 +16,10 @@ const CustomTextBox: React.FC = () => {
     college: '',
     courseDepartment: '',
     courseNumber: '',
+    transportation: '',
   });
 
-  const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleTextChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
 
     if (name === 'courseNumber' && !/^\d{0,3}$/.test(value)) {
@@ -54,6 +56,23 @@ const CustomTextBox: React.FC = () => {
       <h1>Class-Catcher</h1>
       <AddressSearch onAddressSelected={handleAddressSelected} />
       <br />
+
+      <br />
+      {/* Transportation Dropdown */}
+      <select
+        name="transportation"
+        value={textValues.transportation}
+        onChange={handleTextChange}
+        placeholder="Transportation"
+      >
+        <option value="">Mode of Travel</option>
+        <option value="driving">Driving</option>
+        <option value="transit">Transit</option>
+        <option value="walking">Walking</option>
+        <option value="bicycle">Bicycle</option>
+      </select>
+      <br />
+
       {/* College Dropdown */}
       <select
         name="college"
