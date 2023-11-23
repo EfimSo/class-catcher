@@ -55,9 +55,6 @@ const CustomTextBox: React.FC = () => {
     <div className={styles['address-search']}>
       <h1>Class-Catcher</h1>
       <AddressSearch onAddressSelected={handleAddressSelected} />
-      <br />
-
-      <br />
       {/* Transportation Dropdown */}
       <select
         name="transportation"
