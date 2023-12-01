@@ -295,6 +295,13 @@
   /* margin-bottom: 20px; */
 }
 
+.address-search h1 {
+  margin-left: -5px;
+  margin-bottom: 10px; /* Adjust margin bottom as needed */
+  color: black; /* Change text color */
+  /* Add any additional styles you want for the h1 element */
+}
+
 .address-search button:hover {
   background-color: gray; 
  
