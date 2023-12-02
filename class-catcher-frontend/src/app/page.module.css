@@ -297,9 +297,9 @@
 
 .address-search h1 {
   margin-left: -5px;
-  margin-bottom: 10px; /* Adjust margin bottom as needed */
-  color: black; /* Change text color */
-  /* Add any additional styles you want for the h1 element */
+  margin-bottom: 10px; 
+  color: black; 
+  
 }
 
 .address-search button:hover {

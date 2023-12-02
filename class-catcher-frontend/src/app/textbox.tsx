@@ -19,6 +19,25 @@ const CustomTextBox: React.FC = () => {
     transportation: '',
   });
 
+  //the conditionals to see if all fields are filled
+  const [validationError, setValidationError] = useState<string | null>(null);
+
+  const validateForm = () => {
+    if (
+      !textValues.adress ||
+      !textValues.college ||
+      !textValues.courseDepartment ||
+      !textValues.courseNumber ||
+      !textValues.transportation
+    ) {
+      setValidationError('Please fill out all fields.');
+      return false;
+    }
+
+    setValidationError(null);
+    return true;
+  };
+
   const handleTextChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
 
@@ -45,15 +64,26 @@ const CustomTextBox: React.FC = () => {
     setTextValues({ ...textValues, college });
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  //Where the submitted values go after the button is pressed
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Submitted Values:', textValues);
-    // Here where submitted data goes
+
+    if (!validateForm()) {
+      return;
+    }
+
+    try {
+      
+
+    } catch (error) {
+      console.error('Error during submission:', error);
+    }
   };
 
   return (
     <div className={styles['address-search']}>
       <h1>Class-Catcher</h1>
+      {validationError && <p style={{ color: 'red' }}>{validationError}</p>}
       <AddressSearch onAddressSelected={handleAddressSelected} />
       {/* Transportation Dropdown */}
       <select
