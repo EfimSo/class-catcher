@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
+// import Modal from 'react-modal';
 import styles from './page.module.css'
 import AddressSearch from './AddressSearch';
 
@@ -21,6 +22,11 @@ const CustomTextBox: React.FC = () => {
 
   //the conditionals to see if all fields are filled
   const [validationError, setValidationError] = useState<string | null>(null);
+
+  // const [backendData, setBackendData] = useState<any | null>(null);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+
+
 
   const validateForm = () => {
     if (
@@ -73,12 +79,28 @@ const CustomTextBox: React.FC = () => {
     }
 
     try {
-      
+      const response = await fetch('endpoint where flask server is running', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(textValues),
+      });
 
+      if (response.ok) {
+        const data = await response.json();
+        window.alert(`Data from Backend:\n${JSON.stringify(data, null, 2)}`);
+      } else {
+        console.error('Error during submission:', response.status, response.statusText);
+      }
     } catch (error) {
       console.error('Error during submission:', error);
     }
   };
+
+  // const closeModal = () => {
+  //   setIsModalOpen(false);
+  // };
 
   return (
     <div className={styles['address-search']}>
@@ -161,6 +183,18 @@ const CustomTextBox: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <button type="submit">Submit</button>
       </form>
+
+      {/* Display backend data in a modal */}
+      {/* <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="Backend Data Modal"
+      >
+        <h2>Data from Backend:</h2>
+        <pre>{JSON.stringify(backendData, null, 2)}</pre>
+        <button onClick={closeModal}>Close</button>
+      </Modal> */}
+
     </div>
   );
 };
