@@ -255,6 +255,13 @@
   background-color: gray ;
 }
 
+.centerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Adjust the height based on your requirements */
+}
+
 /* Tablet and Smaller Desktop */
 @media (min-width: 701px) and (max-width: 1120px) {
   .grid {
@@ -282,26 +289,120 @@
 }
 
 .address-search {
+  margin: -5px 0;
   position: relative;
   width: 100%;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 }
 
-.address-dropdown {
+.address-search h1 {
+  margin-left: -5px;
+  margin-bottom: 10px; 
+  color: black; 
+  
+}
+
+.address-search button:hover {
+  background-color: gray; 
+ 
+}
+
+
+.address-search select[name="transportation"] {
+  margin: 5px 0;
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+
+.address-search select[name="transportation"]::after {
+  margin: 5px 0;
+  content: '▼'; 
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none; 
+}
+
+
+.address-search select[name="transportation"] option {
+  background-color: #fff;
+  color: #000;
+}
+
+
+.address-search select[name="transportation"]:hover {
+  border-color: #007bff;
+}
+
+
+.address-search .address-dropdown {
+  margin: 5px 0;
   list-style: none;
   padding: 0;
   margin: 0;
-  background: white;
+  background: #fff; 
   border: 1px solid #ccc;
-  max-height: 100px;
+  max-height: 150px; 
   overflow-y: auto;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
-.address-dropdown li {
-  padding: 8px;
+.address-search .address-dropdown li {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; 
+}
+
+.address-search .address-dropdown li:hover {
+  background: #f0f0f0; 
+  color: #007bff; 
+}
+
+.address-search select[name="college"] {
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 4px;
+  font-size: 16px;
+  background: #fff; 
   cursor: pointer;
 }
 
-.address-dropdown li:hover {
-  background: #f0f0f0;
+.address-search select[name="college"]:hover {
+  border-color: #007bff; 
+}
+
+.address-search select[name="college"] option {
+  background-color: #fff; 
+  color: #000; 
+}
+
+.address-search select[name="college"]:focus {
+  outline: none; 
+  border-color: #007bff; 
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+
+
+.address-search input[type="text"] {
+  margin: 5px 0;
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 4px;
+  font-size: 16px;
+  background: #fff;
+}
+
+.address-search input[type="text"]:hover,
+.address-search input[type="text"]:focus {
+  border-color: #007bff; 
+}
+
+
+.address-search input[type="text"]::placeholder {
+  color: black;
 }
