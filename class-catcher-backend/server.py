@@ -1,3 +1,10 @@
+# API Routes
+# Database schema
+#   1. Previous requests
+# Cache for addresses
+#   2. Cache for class info
+# Hardcoded
+#   # List of addresses for dorms
 from flask import Flask
 from flask import jsonify, request, json
 from flask_sqlalchemy import SQLAlchemy
@@ -16,55 +23,35 @@ CORS(app)
 
 db = SQLAlchemy(app)
 
-@app.route('/api')
-def json_test():
-     return jsonify([*map(task_serialize, Task.query.all())]) 
-     
-@app.route('/create_task', methods=['POST'])
-def create():
-    request_data = json.loads(request.data)
-    task = Task(task_name=request_data['name'], task_description =  request_data['description'])
-    db.session.add(task)
-    db.session.commit()
 
-    return {'201': 'task created successfully'}
+@app.route('./search')
+def search():
+    pass
 
 
-@app.route('/delete_task', methods = ['POST'])
-def delete():
-    request_data = json.loads(request.data)
-    Task.query.filter_by(id=request_data['id']).delete()
-    db.session.commit()
 
-    return {'204': 'Deleted successfully'}
-
-@app.route('/edit_task',  methods = ['POST'])
-def edit():
-    request_data = json.loads(request.data)
-    task = Task.query.filter_by(id=request_data['id']).first()
-    task.task_name = request_data['name']
-    task.task_description = request_data['description']
-    db.session.add(task)
-    db.session.commit()
-
-    return {'204': 'task updated successfully'}
-
-class Task(db.Model):
-    __tablename__ = 'tasks'
+class Class(db.Model):
+    __tablename__ = 'class'
     id = db.Column(db.Integer, primary_key=True)
-    task_name = db.Column(db.Text)
-    task_description = db.Column(db.Text)
-
+    class_name = db.Column(db.Text)
+    class_building = db.Column(db.Text)
+    class_distance = db.Column(db.Integer)
+    class_commute_length = db.Column(db.Integer)
+    class_professor = db.Column(db.Text)
+    
     def __str__(self):
-        return f'{self.id} {self.content}'
+        return f'{self.class_name}'
 
 
-def task_serialize(task):
+def class_serialize(cl):
     return {
-        'id': task.id,
-        'name': task.task_name,
-        'description': task.task_description
-        }
+        'name': cl.name,
+        'time': cl.time,
+        'building': cl.building,
+        'distance': cl.dist,
+        'commute_length': cl.comm_length,
+        'professor': cl.prof,
+    }
 
 @app.route('/')
 def sample():
