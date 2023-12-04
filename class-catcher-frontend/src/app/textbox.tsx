@@ -70,6 +70,14 @@ const CustomTextBox: React.FC = () => {
     setTextValues({ ...textValues, college });
   };
 
+
+  // const example_request = 
+  //   {
+  //       "name": "CAS CS 350",
+  //       "address": "123 Example St", // OR "Warren Towers", will have hardcoded values for big dorms
+  //       "transportMode": "transit"
+  //   }
+
   //Where the submitted values go after the button is pressed
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -79,7 +87,7 @@ const CustomTextBox: React.FC = () => {
     }
 
     try {
-      const response = await fetch('endpoint where flask server is running', {
+      const response = await fetch('http://127.0.0.1:5000/search', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
