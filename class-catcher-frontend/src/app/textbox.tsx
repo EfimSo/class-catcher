@@ -8,7 +8,7 @@ interface TextValues {
   college: string;
   courseDepartment: string;
   courseNumber: string;
-  transportation: string;
+  transportMode: string;
 }
 
 const CustomTextBox: React.FC = () => {
@@ -17,8 +17,10 @@ const CustomTextBox: React.FC = () => {
     college: '',
     courseDepartment: '',
     courseNumber: '',
-    transportation: '',
+    transportMode: '',
   });
+
+
 
   //the conditionals to see if all fields are filled
   const [validationError, setValidationError] = useState<string | null>(null);
@@ -34,7 +36,7 @@ const CustomTextBox: React.FC = () => {
       !textValues.college ||
       !textValues.courseDepartment ||
       !textValues.courseNumber ||
-      !textValues.transportation
+      !textValues.transportMode
     ) {
       setValidationError('Please fill out all fields.');
       return false;
@@ -92,7 +94,11 @@ const CustomTextBox: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(textValues),
+        body: JSON.stringify({
+          name: `${textValues.college}-${textValues.courseDepartment}-${textValues.courseNumber}`,
+          adress: textValues.adress,
+          transportMode: textValues.transportMode,
+        }),
       });
 
       if (response.ok) {
@@ -118,7 +124,7 @@ const CustomTextBox: React.FC = () => {
       {/* Transportation Dropdown */}
       <select
         name="transportation"
-        value={textValues.transportation}
+        value={textValues.transportMode}
         onChange={handleTextChange}
         placeholder="Transportation"
       >
