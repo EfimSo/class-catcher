@@ -123,10 +123,10 @@ const CustomTextBox: React.FC = () => {
       <AddressSearch onAddressSelected={handleAddressSelected} />
       {/* Transportation Dropdown */}
       <select
-        name="transportation"
+        name="transportMode"
         value={textValues.transportMode}
         onChange={handleTextChange}
-        placeholder="Transportation"
+        placeholder="transportMode"
       >
         <option value="">Mode of Travel</option>
         <option value="driving">Driving</option>

@@ -308,7 +308,7 @@
 }
 
 
-.address-search select[name="transportation"] {
+.address-search select[name="transportMode"] {
   margin: 5px 0;
   box-sizing: border-box;
   border: 1px solid black;
@@ -317,7 +317,7 @@
 }
 
 
-.address-search select[name="transportation"]::after {
+.address-search select[name="transportMode"]::after {
   margin: 5px 0;
   content: '▼'; 
   position: absolute;
@@ -328,13 +328,13 @@
 }
 
 
-.address-search select[name="transportation"] option {
+.address-search select[name="transportMode"] option {
   background-color: #fff;
   color: #000;
 }
 
 
-.address-search select[name="transportation"]:hover {
+.address-search select[name="transportMode"]:hover {
   border-color: #007bff;
 }
 
