@@ -67,7 +67,6 @@ def main():
         # Get the current Eastern Time (ET) datetime
         current_et_datetime = dt.datetime.now(tz=tz.gettz("America/New_York"))
 
-        # Set a fixed minimum start date (January 18th) for the next year
         minimum_start_date = dt.datetime(year=current_et_datetime.year + 1, month=1, day=18, tzinfo=tz.gettz("America/New_York"))
 
         # Calculate the start date for the next specified weekdays from the minimum_start_date
@@ -75,7 +74,7 @@ def main():
         weekday_mapping = {'MO': 0, 'TU': 1, 'WE': 2, 'TH': 3, 'FR': 4}
         start_date += dt.timedelta(days=(weekday_mapping[weekdays[0]] - start_date.weekday() + 7) % 7)
 
-        # Adjust start date based on the specified weekdays (remove redundant adjustment)
+        # Adjust start date based on the specified weekdays
         start_date += dt.timedelta(days=(weekday_mapping[weekdays[0]] - start_date.weekday() + 7) % 7)
 
         # Adjust start date to the next class day after the break (March 9 to March 18)
