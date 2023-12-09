@@ -13,7 +13,8 @@ from flask_cors import CORS
 # import requests
 import random
 basedir = os.path.abspath(os.path.dirname(__file__))
-
+from class_info_scraper import search_course
+from google_maps import search_building_code, search_location
 
 app = Flask(__name__)
 
@@ -29,11 +30,22 @@ db = SQLAlchemy(app)
 def search():
     request_data = json.loads(request.data)
     # task = Class.query.filter_by(class_name=request_data['name']).first() # search for class in db
-    ret_list = [Class(class_name = request_data["name"], class_time = "MWF 10:10 am-11:00 am",
-                      class_building="CGS", class_distance=f"{random.randint(1, 20)} mi",
-                      class_commute_length = f"{random.randint(5, 30)} min",
-                      class_professor = "Perry Dohnam")
-                for _ in range(5)]
+    class_name = request_data["name"] if " " not in request_data["name"] else "".join([s for s in request_data["name"] if s != " "])
+    course_info = search_course(class_name)
+    if course_info is None:
+        return {'415': 'Course name could not be found'}
+    ret_list = []
+    for i in range(len(course_info["sections"])):
+        building_address = search_building_code(course_info["locations"][i][:3])
+        if building_address is None:
+            class_distance, class_commute_length = ("Could not find address" for x in [1, 2])
+        else:
+            distloc = search_location(request_data["address"], building_address)
+            class_distance, class_commute_length = distloc if distloc is not None else "Could not find address"
+        ret_list.append(Class(class_name = class_name, class_time = course_info["times"][i],
+                      class_building=course_info["locations"][i], class_distance=class_distance,
+                      class_commute_length = class_commute_length,
+                      class_professor = course_info["professors"][i]))
     return jsonify([*map(class_serialize, ret_list)])
 
 class Class(db.Model):
