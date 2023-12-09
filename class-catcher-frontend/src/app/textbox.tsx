@@ -95,8 +95,8 @@ const CustomTextBox: React.FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: `${textValues.college}-${textValues.courseDepartment}-${textValues.courseNumber}`,
-          adress: textValues.adress,
+          name: `${textValues.college} ${textValues.courseDepartment} ${textValues.courseNumber}`,
+          address: textValues.adress,
           transportMode: textValues.transportMode,
         }),
       });

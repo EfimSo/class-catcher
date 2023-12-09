@@ -43,19 +43,14 @@ def search_location(address, course_address):
 
 address = "140 Bay State Rd, Boston, MA"
 course_address = "871 Commonwealth Ave, Boston, MA"
-print(search_location(address, course_address))
+# print(search_location(address, course_address))
 
-buildings = pd.read_csv("./data/building_addresses.csv")
-def process_building(s):
-    if "–" in s:
-        num, *rest = s.split(" ")[0]
-        firstnum = num.split("–")[0]
-        return firstnum + " ".join(rest)
-    else:
-        return s
-# buildings["Address"] = buildings["Address"].apply(process_building)
-# print(buildings["Address"])
-# print(buildings[buildings["Abbreviation"] == "ENG"])
+if os.getcwd().endswith("class-catcher"):
+    buildings = pd.read_csv("./class-catcher-backend/data/building_addresses.csv")
+else:
+    buildings = pd.read_csv("./data/building_addresses.csv")
+            
+
 # Returns address of a BU building by looking it up in ./data/building_addresses.csv
 # Pulled from https://www.bu.edu/summer/summer-sessions/life-at-bu/campus-resources/building-codes/
 def search_building_code(code):
@@ -67,3 +62,14 @@ def search_building_code(code):
     return row["Address"].to_string()
 
 # print(search_building_code("HAR"))
+
+def process_building(s):
+    if "–" in s:
+        num, *rest = s.split(" ")[0]
+        firstnum = num.split("–")[0]
+        return firstnum + " ".join(rest)
+    else:
+        return s
+# buildings["Address"] = buildings["Address"].apply(process_building)
+# print(buildings["Address"])
+# print(buildings[buildings["Abbreviation"] == "ENG"])
