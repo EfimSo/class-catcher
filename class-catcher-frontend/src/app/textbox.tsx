@@ -73,13 +73,6 @@ const CustomTextBox: React.FC = () => {
   };
 
 
-  // const example_request = 
-  //   {
-  //       "name": "CAS CS 350",
-  //       "address": "123 Example St", // OR "Warren Towers", will have hardcoded values for big dorms
-  //       "transportMode": "transit"
-  //   }
-
   //Where the submitted values go after the button is pressed
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
