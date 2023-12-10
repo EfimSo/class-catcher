@@ -59,23 +59,7 @@ def create_google_calendar_event(class_data):
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-<<<<<<< HEAD
             flow = InstalledAppFlow.from_client_secrets_file("secrets.json", SCOPES)
-=======
-            client_config = {
-                "installed": {
-                    "client_id": client_id,
-                    "project_id": project_id,
-                    "auth_uri":"https://accounts.google.com/o/oauth2/auth",
-                    "token_uri":"https://oauth2.googleapis.com/token",
-                    "auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
-                    "client_secret": client_secret,
-                    "redirect_uris":["http://localhost:3000", "http://127.0.0.1:5000"],
-                    #,"http://localhost:3000","https://localhost","https://localhost:3000","http://127.0.0.1:5000","http://localhost:5000","http://127.0.0.1:5000/","http://localhost:5000/"]
-                }
-            }
-            flow = InstalledAppFlow.from_client_config(client_config, SCOPES)
->>>>>>> eb759b75c0dfb78c9a02b91e440fe348a99ccb41
             creds = flow.run_local_server(port=0)
  
         with open("token.json", "w") as token:
