@@ -12,8 +12,6 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 load_dotenv()
-client_id = os.getenv("CLIENT_ID")
-client_secret = os.getenv("CLIENT_SECRET")
 
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
@@ -58,15 +56,7 @@ def main():
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_config (
-                client_config={
-                    "installed": {
-                        "client_id": client_id,
-                        "client_secret": client_secret,
-                    }
-                },
-                scopes=SCOPES
-            )
+            flow = InstalledAppFlow.from_client_secrets_file("secrets.json", SCOPES)
             creds = flow.run_local_server(port=0)
  
         with open("token.json", "w") as token:
