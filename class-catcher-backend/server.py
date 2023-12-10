@@ -14,7 +14,7 @@ from flask_cors import CORS
 import random
 basedir = os.path.abspath(os.path.dirname(__file__))
 from class_info_scraper import search_course
-from google_maps import search_building_code, search_location
+from google_maps import search_building_code, search_location, search_dorm
 
 app = Flask(__name__)
 
@@ -38,9 +38,15 @@ def search():
     for i in range(len(course_info["sections"])):
         building_address = search_building_code(course_info["locations"][i][:3])
         if building_address is None:
-            class_distance, class_commute_length = ("Could not find address" for x in [1, 2])
+            class_distance, class_commute_length = ("Could not find address" for _ in [1, 2])
         else:
-            distloc = search_location(request_data["address"], building_address)
+            dorm_address = search_dorm(request_data["address"])
+            if dorm_address is None:
+                address = request_data["address"]
+            else:
+                address = dorm_address
+            transport_mode = request_data["transportMode"] if request_data["transportMode"] != "bicycle" else "bicycling"
+            distloc = search_location(address, building_address, transport_mode)
             class_distance, class_commute_length = distloc if distloc is not None else "Could not find address"
         ret_list.append(Class(class_name = class_name, class_time = course_info["times"][i],
                       class_building=course_info["locations"][i], class_distance=class_distance,

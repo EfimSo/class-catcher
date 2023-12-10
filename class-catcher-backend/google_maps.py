@@ -15,12 +15,12 @@ https://maps.googleapis.com/maps/api/distancematrix/json
   &key={key}
 """
 url = "https://maps.googleapis.com/maps/api/distancematrix/json"
-def search_location(address, course_address):
+def search_location(address, course_address, travel_mode):
     params = {
         "units": "imperial",
         "origins": address, # 02215
         "destinations": course_address,
-        "travelmode": "transit",
+        "mode": travel_mode,
         "key": key
     }
     # For address in passed addresses 
@@ -47,9 +47,10 @@ course_address = "871 Commonwealth Ave, Boston, MA"
 
 if os.getcwd().endswith("class-catcher"):
     buildings = pd.read_csv("./class-catcher-backend/data/building_addresses.csv")
+    dorms = pd.read_csv("./class-catcher-backend/data/dorm_addresses.csv")
 else:
     buildings = pd.read_csv("./data/building_addresses.csv")
-            
+    dorms = pd.read_csv("./data/dorm_addresses.csv")
 
 # Returns address of a BU building by looking it up in ./data/building_addresses.csv
 # Pulled from https://www.bu.edu/summer/summer-sessions/life-at-bu/campus-resources/building-codes/
@@ -60,8 +61,15 @@ def search_building_code(code):
     if row.shape[0] == 0:
         return None
     return row["Address"].to_string()
-
 # print(search_building_code("HAR"))
+
+def search_dorm(dorm_name):
+    row = dorms[dorms["Dorm Name"] == dorm_name]
+    if row.shape[0] == 0:
+        return None
+    return row["Address"].to_string()
+
+# print(search_dorm("West Campus, Claflin Hall"))
 
 def process_building(s):
     if "–" in s:
