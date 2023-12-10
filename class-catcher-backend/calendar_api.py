@@ -62,12 +62,12 @@ def main():
             client_config = {
                 "installed": {
                     "client_id": client_id,
-                    "client_secret": client_secret,
                     "project_id": project_id,
-                    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-                    "token_uri": "https://oauth2.googleapis.com/token",
-                    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-                    "redirect_uris":["http://localhost"]
+                    "auth_uri":"https://accounts.google.com/o/oauth2/auth",
+                    "token_uri":"https://oauth2.googleapis.com/token",
+                    "auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
+                    "client_secret": client_secret,
+                    "redirect_uris":["http://localhost","http://localhost:3000","https://localhost","https://localhost:3000", "http://localhost:5000"]
                 }
             }
             flow = InstalledAppFlow.from_client_config(client_config, SCOPES)
