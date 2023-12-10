@@ -47,7 +47,7 @@ def is_week_within_break(start_date, weekdays, break_start_date, break_end_date)
             return True
     return False
 
-def main():
+def create_google_calendar_event(class_data):
     creds = None
 
     eastern_tz = tz.gettz("America/New_York")
@@ -67,7 +67,8 @@ def main():
                     "token_uri":"https://oauth2.googleapis.com/token",
                     "auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
                     "client_secret": client_secret,
-                    "redirect_uris":["http://localhost","http://localhost:3000","https://localhost","https://localhost:3000", "http://localhost:5000"]
+                    "redirect_uris":["http://localhost:3000", "http://127.0.0.1:5000"],
+                    #,"http://localhost:3000","https://localhost","https://localhost:3000","http://127.0.0.1:5000","http://localhost:5000","http://127.0.0.1:5000/","http://localhost:5000/"]
                 }
             }
             flow = InstalledAppFlow.from_client_config(client_config, SCOPES)
@@ -138,8 +139,10 @@ def main():
 
     except HttpError as error:
         print("An Error occurred:", error)
+        raise
     except ValueError as error:
         print("Invalid input:", error)
+        raise
 
 if __name__ == "__main__":
     main()
