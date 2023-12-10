@@ -28,6 +28,9 @@ const CustomTextBox: React.FC = () => {
   // const [backendData, setBackendData] = useState<any | null>(null);
   // const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [classData, setClassData] = useState<any[]>([]); // State to store class data
+  const [openModal, setOpenModal] = useState(false); // State to control modal visibility
+  const [selectedClass, setSelectedClass] = useState<any | null>(null); // State to store the selected class
 
 
   const validateForm = () => {
@@ -96,7 +99,9 @@ const CustomTextBox: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
-        window.alert(`Data from Backend:\n${JSON.stringify(data, null, 2)}`);
+        setClassData(data); // Set class data received from the backend
+        //window.alert(`Data from Backend:\n${JSON.stringify(data, null, 2)}`);
+        setOpenModal(true); // Open the modal
       } else {
         console.error('Error during submission:', response.status, response.statusText);
       }
@@ -108,6 +113,36 @@ const CustomTextBox: React.FC = () => {
   // const closeModal = () => {
   //   setIsModalOpen(false);
   // };
+  const handleClassSelection = (classItem: any) => {
+    setSelectedClass(classItem);
+  };
+
+  const addToGoogleCalendar = async () => {
+    try {
+      if (selectedClass) {
+        const response = await fetch('http://127.0.0.1:5000/add-to-calendar', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            classData: selectedClass,
+            // Include any other necessary parameters
+          }),
+        });
+
+        if (response.ok) {
+          console.log('Event added to Google Calendar!');
+        } else {
+          console.error('Error adding to Google Calendar:', response.status, response.statusText);
+        }
+      } else {
+        console.log('Please select a class before adding to Google Calendar.');
+      }
+    } catch (error) {
+      console.error('Error adding to Google Calendar:', error);
+    }
+  };
 
   return (
     <div className={styles['address-search']}>
@@ -202,6 +237,38 @@ const CustomTextBox: React.FC = () => {
         <button onClick={closeModal}>Close</button>
       </Modal> */}
 
+      {/* Display backend data in a modal */}
+      {openModal && (
+  <div className={styles.modal}>
+    <h2>Class Schedule</h2>
+    {classData.map((classItem: any) => (
+      <div key={classItem.name} onClick={() => handleClassSelection(classItem)}>
+        <p>
+          <strong>Class Name:</strong> {classItem.name}
+        </p>
+        <p>
+          <strong>Professor:</strong> {classItem.professor}
+        </p>
+        <p>
+          <strong>Time:</strong> {classItem.time}
+        </p>
+        <p>
+          <strong>Building:</strong> {classItem.building}
+        </p>
+        <p>
+          <strong>Distance:</strong> {classItem.distance}
+        </p>
+        <p>
+          <strong>Commute Length:</strong> {classItem.commute_length}
+        </p>
+        <button onClick={() => addToGoogleCalendar(classItem)}>
+          Add to Google Calendar
+        </button>
+      </div>
+    ))}
+    <button onClick={() => setOpenModal(false)}>Close</button>
+  </div>
+)}
     </div>
   );
 };
