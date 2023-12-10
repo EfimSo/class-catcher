@@ -133,4 +133,4 @@ def create_google_calendar_event(class_data):
         raise
 
 if __name__ == "__main__":
-    main()
+    create_google_calendar_event()
