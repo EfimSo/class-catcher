@@ -1,5 +1,7 @@
 import datetime as dt
 import os.path
+import os
+from dotenv import load_dotenv
 import re
 from dateutil import tz
 
@@ -8,6 +10,11 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+
+load_dotenv()
+client_id = os.getenv("CLIENT_ID")
+client_secret = os.getenv("CLIENT_SECRET")
+project_id = os.getenv("PROJECT_ID")
 
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
@@ -40,7 +47,7 @@ def is_week_within_break(start_date, weekdays, break_start_date, break_end_date)
             return True
     return False
 
-def main():
+def create_google_calendar_event(class_data):
     creds = None
 
     eastern_tz = tz.gettz("America/New_York")
@@ -52,7 +59,7 @@ def main():
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file("cred.json", SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file("secrets.json", SCOPES)
             creds = flow.run_local_server(port=0)
  
         with open("token.json", "w") as token:
@@ -110,18 +117,20 @@ def main():
                 "timeZone": "America/New_York",  
             },
             "recurrence": [
-                f"RRULE:FREQ=WEEKLY;BYDAY={','.join(weekdays)};INTERVAL=1;UNTIL={end_date_recurrence.strftime('%Y%m%dT%H%M%SZ')}",
+                "RRULE:FREQ=WEEKLY;BYDAY={};INTERVAL=1;UNTIL={}".format(','.join(weekdays), end_date_recurrence.strftime('%Y%m%dT%H%M%SZ')),
             ],
         }
 
         event = service.events().insert(calendarId="primary", body=event).execute()
 
-        print(f"Event Created {event.get('htmlLink')}")
+        print("Event Created {}".format(event.get('htmlLink')))
 
     except HttpError as error:
         print("An Error occurred:", error)
+        raise
     except ValueError as error:
         print("Invalid input:", error)
+        raise
 
 if __name__ == "__main__":
-    main()
+    create_google_calendar_event()

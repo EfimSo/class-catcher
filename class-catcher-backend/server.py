@@ -16,6 +16,9 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 from class_info_scraper import search_course
 from google_maps import search_building_code, search_location, search_dorm
 
+from calendar_api import create_google_calendar_event
+
+
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
@@ -25,6 +28,19 @@ CORS(app)
 
 db = SQLAlchemy(app)
 
+@app.route('/add-to-calendar', methods=['POST'])
+def add_to_calendar():
+    try:
+        data = json.loads(request.data)
+        class_data = data.get('classData')
+        
+        # Use the create_google_calendar_event function to add the event to Google Calendar
+        response = create_google_calendar_event(class_data)
+
+        return jsonify({'message': 'Event added to Google Calendar successfully'})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/search', methods = ['POST'])
 def search():
