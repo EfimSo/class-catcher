@@ -2,6 +2,8 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 // import Modal from 'react-modal';
 import styles from './page.module.css'
 import AddressSearch from './AddressSearch';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 //initalize the fields the user is going to input
 interface TextValues {
@@ -22,8 +24,7 @@ const CustomTextBox: React.FC = () => {
     transportMode: '',
   });
 
-
-
+  
   //the conditionals to see if all fields are filled
   const [validationError, setValidationError] = useState<string | null>(null);
   const [classData, setClassData] = useState<any[]>([]); // State to store class data
@@ -130,14 +131,23 @@ const CustomTextBox: React.FC = () => {
         });
 
         if (response.ok) {
-          console.log('Event added to Google Calendar!');
+          toast.success('Event added to Google Calendar!', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
         } else {
+          toast.error('Error adding to Google Calendar');
           console.error('Error adding to Google Calendar:', response.status, response.statusText);
         }
       } else {
-        console.log('Please select a class before adding to Google Calendar.');
+        toast.warn('Please select a class before adding to Google Calendar.');
       }
     } catch (error) {
+      toast.error('Error adding to Google Calendar');
       console.error('Error adding to Google Calendar:', error);
     }
   };
@@ -258,6 +268,7 @@ const CustomTextBox: React.FC = () => {
     <button onClick={() => setOpenModal(false)}>Close</button>
   </div>
 )}
+    <ToastContainer />
     </div>
   );
 };
