@@ -14,23 +14,27 @@ from googleapiclient.errors import HttpError
 from google_maps import search_building_code
 
 load_dotenv()
+#load ids from .env file
 client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
 project_id = os.getenv("PROJECT_ID")
 
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
+#test case
 event_name = "CASCS112"
 event_loc = "CGS 129, 871 Commonwealth Avenue"
 event_time = "TR 11:00 am-12:15 pm"
 
 weekday_mapping = {'MO': 0, 'TU': 1, 'WE': 2, 'TH': 3, 'FR': 4}
 
+#Get the next scheduling days the following week
 def get_next_weekday(start_date, target_weekdays):
     current_weekday = start_date.weekday()
     days_until_target = (min(target_weekdays) - current_weekday + 7) % 7
     return start_date + dt.timedelta(days_until_target)
 
+# Reformat the input time so the calendar api can schedule It
 def extract_times_and_weekdays(event_time):
     match = re.match(r"([A-Za-z]+) (\d+:\d+ [apm]{2})-(\d+:\d+ [apm]{2})", event_time)
     if match:
@@ -41,6 +45,7 @@ def extract_times_and_weekdays(event_time):
     else:
         raise ValueError("Invalid input string format")
 
+#Check if the days are in the break
 def is_week_within_break(start_date, weekdays, break_start_date, break_end_date):
     for day_str in weekdays:
         # Convert weekday string to corresponding integer
@@ -51,15 +56,19 @@ def is_week_within_break(start_date, weekdays, break_start_date, break_end_date)
 
 def create_google_calendar_event(class_data):
     creds = None
+    #Get the class name, location and time from the input
     event_name = class_data["name"]
     event_loc = class_data["building"] + ", " + search_building_code(class_data["building"][:3])
     event_time = class_data["time"]
 
+    #Establish timezone
     eastern_tz = tz.gettz("America/New_York")
 
+    #Check if user token exists
     if os.path.exists("token.json"):
         creds = Credentials.from_authorized_user_file("token.json", SCOPES)
 
+    #if not create one
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
@@ -111,6 +120,7 @@ def create_google_calendar_event(class_data):
         # Calculate the end date for the recurrence (adjust the number of weeks as needed)
         end_date_recurrence = start_date + dt.timedelta(weeks=15)  # 15 weeks total, including the first week
 
+        #Event structure
         event = {
             "summary": event_name,
             "location": event_loc,
@@ -129,8 +139,10 @@ def create_google_calendar_event(class_data):
             ],
         }
 
+        #Create the Event
         event = service.events().insert(calendarId="primary", body=event).execute()
 
+        #Print a message if it's successful
         print("Event Created {}".format(event.get('htmlLink')))
 
     except HttpError as error:
