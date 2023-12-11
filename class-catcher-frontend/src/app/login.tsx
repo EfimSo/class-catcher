@@ -2,6 +2,7 @@
 import React from 'react';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 
+//The whole code behind our google login api using google projects and cloud 
 interface AuthProviderProps {
   children: React.ReactNode;
 }

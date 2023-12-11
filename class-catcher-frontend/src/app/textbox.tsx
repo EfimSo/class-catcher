@@ -3,6 +3,7 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import styles from './page.module.css'
 import AddressSearch from './AddressSearch';
 
+//initalize the fields the user is going to input
 interface TextValues {
   adress: string;
   college: string;
@@ -10,6 +11,7 @@ interface TextValues {
   courseNumber: string;
   transportMode: string;
 }
+
 
 const CustomTextBox: React.FC = () => {
   const [textValues, setTextValues] = useState<TextValues>({
@@ -24,15 +26,11 @@ const CustomTextBox: React.FC = () => {
 
   //the conditionals to see if all fields are filled
   const [validationError, setValidationError] = useState<string | null>(null);
-
-  // const [backendData, setBackendData] = useState<any | null>(null);
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [classData, setClassData] = useState<any[]>([]); // State to store class data
   const [openModal, setOpenModal] = useState(false); // State to control modal visibility
   const [selectedClass, setSelectedClass] = useState<any | null>(null); // State to store the selected class
 
-
+  //make sure the user fills out all fields
   const validateForm = () => {
     if (
       !textValues.adress ||
@@ -48,6 +46,7 @@ const CustomTextBox: React.FC = () => {
     setValidationError(null);
     return true;
   };
+
 
   const handleTextChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -83,7 +82,7 @@ const CustomTextBox: React.FC = () => {
     if (!validateForm()) {
       return;
     }
-
+    //connects the frontend to the backend using fetch
     try {
       const response = await fetch('http://127.0.0.1:5000/search', {
         method: 'POST',
@@ -110,13 +109,12 @@ const CustomTextBox: React.FC = () => {
     }
   };
 
-  // const closeModal = () => {
-  //   setIsModalOpen(false);
-  // };
+
   const handleClassSelection = (classItem: any) => {
     setSelectedClass(classItem);
   };
 
+  //connects the frontend to the google calender API
   const addToGoogleCalendar = async (selectedClass: any) => {
     try {
       if (selectedClass) {
@@ -226,16 +224,7 @@ const CustomTextBox: React.FC = () => {
         <button type="submit">Submit</button>
       </form>
 
-      {/* Display backend data in a modal */}
-      {/* <Modal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        contentLabel="Backend Data Modal"
-      >
-        <h2>Data from Backend:</h2>
-        <pre>{JSON.stringify(backendData, null, 2)}</pre>
-        <button onClick={closeModal}>Close</button>
-      </Modal> */}
+ 
 
       {/* Display backend data in a modal */}
       {openModal && (
