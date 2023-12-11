@@ -60,7 +60,7 @@ def search_building_code(code):
     row = buildings[buildings["Abbreviation"] == code]
     if row.shape[0] == 0:
         return None
-    return row["Address"].to_string()
+    return row["Address"].to_string(index=False)
 # print(search_building_code("HAR"))
 
 def search_dorm(dorm_name):

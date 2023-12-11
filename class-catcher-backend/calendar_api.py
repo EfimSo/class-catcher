@@ -11,6 +11,8 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
+from google_maps import search_building_code
+
 load_dotenv()
 client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
@@ -49,6 +51,9 @@ def is_week_within_break(start_date, weekdays, break_start_date, break_end_date)
 
 def create_google_calendar_event(class_data):
     creds = None
+    event_name = class_data["name"]
+    event_loc = class_data["building"] + ", " + search_building_code(class_data["building"][:3])
+    event_time = class_data["time"]
 
     eastern_tz = tz.gettz("America/New_York")
 
@@ -59,7 +64,10 @@ def create_google_calendar_event(class_data):
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file("secrets.json", SCOPES)
+            if os.getcwd().endswith("class-catcher"):
+                flow = InstalledAppFlow.from_client_secrets_file("./class-catcher-backend/secrets.json", SCOPES)
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file("./secrets.json", SCOPES)
             creds = flow.run_local_server(port=0)
  
         with open("token.json", "w") as token:
