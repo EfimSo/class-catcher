@@ -1,17 +1,10 @@
-# API Routes
-# Database schema
-#   1. Previous requests
-# Cache for addresses
-#   2. Cache for class info
-# Hardcoded
-#   # List of addresses for dorms
+# Server implementation 
+# Uses Flask for API endpoints, SQLAlchemy for database
 from flask import Flask
 from flask import jsonify, request, json
 from flask_sqlalchemy import SQLAlchemy
 import os.path
 from flask_cors import CORS
-# import requests
-import random
 basedir = os.path.abspath(os.path.dirname(__file__))
 from class_info_scraper import search_course
 from google_maps import search_building_code, search_location, search_dorm
@@ -45,23 +38,26 @@ def add_to_calendar():
 @app.route('/search', methods = ['POST'])
 def search():
     request_data = json.loads(request.data)
-    # task = Class.query.filter_by(class_name=request_data['name']).first() # search for class in db
     class_name = request_data["name"] if " " not in request_data["name"] else "".join([s for s in request_data["name"] if s != " "])
+    # Calls class info scraper
     course_info = search_course(class_name)
     if course_info is None:
         return {'415': 'Course name could not be found'}
     ret_list = []
     for i in range(len(course_info["sections"])):
+        # Search class building address by abbreviation
         building_address = search_building_code(course_info["locations"][i][:3])
         if building_address is None:
             class_distance, class_commute_length = ("Could not find address" for _ in [1, 2])
         else:
+            # Search dorm address by abbreviation
             dorm_address = search_dorm(request_data["address"])
             if dorm_address is None:
                 address = request_data["address"]
             else:
                 address = dorm_address
             transport_mode = request_data["transportMode"] if request_data["transportMode"] != "bicycle" else "bicycling"
+            # Search location using Google Maps API
             distloc = search_location(address, building_address, transport_mode)
             class_distance, class_commute_length = distloc if distloc is not None else "Could not find address"
         ret_list.append(Class(class_name = class_name, class_time = course_info["times"][i],
@@ -96,7 +92,7 @@ def class_serialize(cl):
 
 @app.route('/')
 def sample():
-    return '<h1>Testing Flask</h1>'
+    return '<h1>Testing Class-Catcher</h1>'
 
 if __name__ == '__main__':
     app.run(debug=True)
