@@ -2,6 +2,7 @@
 Application that allows a user to pull information about courses offered at BU and add them to their Google calendar based on distance and commute length from their address.
 ## Presentation Recording
 [Presentation Recording](https://youtu.be/U-xNm0Z-5AQ)
+[Project Doc](Project_Doc.pdf)
 
 ## Tech Stack
 - Front-end: TypeScript, React, NextJS
