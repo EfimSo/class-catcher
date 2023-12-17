@@ -21,6 +21,32 @@ CORS(app)
 
 db = SQLAlchemy(app)
 
+class Class(db.Model):
+    __tablename__ = 'class'
+    id = db.Column(db.Integer, primary_key=True)
+    class_name = db.Column(db.Text)
+    class_time = db.Column(db.Text)
+    class_building = db.Column(db.Text)
+    class_distance = db.Column(db.Text)
+    class_commute_length = db.Column(db.Text)
+    class_professor = db.Column(db.Text)
+    
+    def __str__(self):
+        return f'{self.class_name}'
+
+
+def class_serialize(cl):
+    return {
+        'name': cl.class_name,
+        'time': cl.class_time,
+        'building': cl.class_building,
+        'distance': cl.class_distance,
+        'commute_length': cl.class_commute_length,
+        'professor': cl.class_professor,
+    }
+
+
+
 @app.route('/add-to-calendar', methods=['POST'])
 def add_to_calendar():
     try:
@@ -66,29 +92,7 @@ def search():
                       class_professor = course_info["professors"][i]))
     return jsonify([*map(class_serialize, ret_list)])
 
-class Class(db.Model):
-    __tablename__ = 'class'
-    id = db.Column(db.Integer, primary_key=True)
-    class_name = db.Column(db.Text)
-    class_time = db.Column(db.Text)
-    class_building = db.Column(db.Text)
-    class_distance = db.Column(db.Text)
-    class_commute_length = db.Column(db.Text)
-    class_professor = db.Column(db.Text)
-    
-    def __str__(self):
-        return f'{self.class_name}'
 
-
-def class_serialize(cl):
-    return {
-        'name': cl.class_name,
-        'time': cl.class_time,
-        'building': cl.class_building,
-        'distance': cl.class_distance,
-        'commute_length': cl.class_commute_length,
-        'professor': cl.class_professor,
-    }
 
 @app.route('/')
 def sample():
